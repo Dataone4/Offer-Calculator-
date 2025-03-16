@@ -27,11 +27,15 @@
       color: var(--text);
       padding: 20px;
       line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     
     .calculator-container {
+      width: 100%;
       max-width: 500px;
-      margin: 0 auto;
       background: var(--card-bg);
       padding: 30px;
       border-radius: var(--border-radius);
@@ -108,24 +112,6 @@
       background-color: var(--primary-hover);
     }
     
-    .link-container {
-      text-align: center;
-      margin: 10px 0;
-    }
-    
-    .learn-more-link {
-      color: var(--primary);
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-      transition: color 0.3s ease;
-    }
-    
-    .learn-more-link:hover {
-      color: var(--primary-hover);
-      text-decoration: underline;
-    }
-    
     .result {
       background-color: #f5f5f5;
       padding: 15px;
@@ -153,52 +139,6 @@
       border-top: 1px solid #eee;
     }
     
-    .embed-section {
-      margin-top: 30px;
-      padding-top: 20px;
-      border-top: 1px solid #eee;
-    }
-    
-    .embed-title {
-      font-size: 16px;
-      font-weight: 600;
-      margin-bottom: 10px;
-    }
-    
-    .embed-code {
-      background-color: #f5f5f5;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      padding: 10px;
-      font-family: monospace;
-      font-size: 12px;
-      overflow-x: auto;
-      white-space: nowrap;
-      margin-bottom: 10px;
-    }
-    
-    .copy-button {
-      background-color: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 4px;
-      padding: 8px 12px;
-      font-size: 12px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    
-    .copy-button:hover {
-      background-color: var(--primary-hover);
-    }
-    
-    .copy-success {
-      display: none;
-      color: green;
-      font-size: 12px;
-      margin-left: 10px;
-    }
-    
     @media (max-width: 600px) {
       .calculator-container {
         padding: 20px;
@@ -211,11 +151,11 @@
     <h2>Offer Calculator</h2>
     
     <div class="input-group">
-      <label for="annualProfit">Annual Profit (ƒ)</label>
+      <label for="ebitda">EBITDA (ƒ)</label>
       <input 
         type="number" 
-        id="annualProfit" 
-        placeholder="Enter annual profit" 
+        id="ebitda" 
+        placeholder="Enter EBITDA" 
         value="760000"
       >
     </div>
@@ -241,44 +181,25 @@
     
     <button class="button" id="calculateBtn">Calculate Offer</button>
     
-    <div class="link-container">
-      <a href="#" class="learn-more-link" id="learnMoreLink">Learn more about how we calculate offers</a>
-    </div>
-    
     <div class="result" id="resultContainer">
       <h3>Estimated Offer</h3>
       <div class="result-value" id="offerResult"></div>
-      <p>Based on <span id="profitDisplay"></span> annual profit with a <span id="multipleDisplay"></span> multiple.</p>
+      <p>Based on <span id="ebitdaDisplay"></span> EBITDA with a <span id="multipleDisplay"></span> multiple.</p>
     </div>
     
     <p class="disclaimer">Disclaimer: The results provided by this calculator are for informational purposes only and do not constitute financial advice. Actual business offers may vary based on multiple factors. Consult with a financial advisor for a professional assessment.</p>
-    
-    <div class="embed-section">
-      <div class="embed-title">Embed this calculator on your website</div>
-      <div class="embed-code" id="embedCode">
-        &lt;iframe src="https://your-website.com/offer-calculator.html" width="100%" height="600" frameborder="0" scrolling="no"&gt;&lt;/iframe&gt;
-      </div>
-      <div>
-        <button class="copy-button" id="copyButton">Copy embed code</button>
-        <span class="copy-success" id="copySuccess">Copied!</span>
-      </div>
-    </div>
   </div>
 
   <script>
     // Get DOM elements
-    const annualProfitInput = document.getElementById('annualProfit');
+    const ebitdaInput = document.getElementById('ebitda');
     const multipleRange = document.getElementById('multipleRange');
     const multipleValue = document.getElementById('multipleValue');
     const calculateBtn = document.getElementById('calculateBtn');
     const resultContainer = document.getElementById('resultContainer');
     const offerResult = document.getElementById('offerResult');
-    const profitDisplay = document.getElementById('profitDisplay');
+    const ebitdaDisplay = document.getElementById('ebitdaDisplay');
     const multipleDisplay = document.getElementById('multipleDisplay');
-    const learnMoreLink = document.getElementById('learnMoreLink');
-    const copyButton = document.getElementById('copyButton');
-    const embedCode = document.getElementById('embedCode');
-    const copySuccess = document.getElementById('copySuccess');
     
     // Update multiple value display when slider changes
     multipleRange.addEventListener('input', () => {
@@ -294,47 +215,19 @@
     // Calculate offer when button is clicked
     calculateBtn.addEventListener('click', () => {
       // Get values
-      const profit = parseFloat(annualProfitInput.value) || 0;
+      const ebitda = parseFloat(ebitdaInput.value) || 0;
       const multiple = parseFloat(multipleRange.value);
       
       // Calculate offer
-      const offer = profit * multiple;
+      const offer = ebitda * multiple;
       
       // Display results
       offerResult.textContent = formatCurrency(offer);
-      profitDisplay.textContent = formatCurrency(profit);
+      ebitdaDisplay.textContent = formatCurrency(ebitda);
       multipleDisplay.textContent = `${multiple}x`;
       
       // Show result container
       resultContainer.classList.add('active');
-    });
-    
-    // Learn more link handler (you can customize this)
-    learnMoreLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      // You can add custom behavior here, like opening a modal or navigating to another page
-      alert('You can customize this link to point to more information about your offer calculation process.');
-    });
-    
-    // Copy embed code functionality
-    copyButton.addEventListener('click', () => {
-      // Create a temporary textarea element to copy from
-      const textarea = document.createElement('textarea');
-      textarea.value = embedCode.textContent.trim();
-      document.body.appendChild(textarea);
-      
-      // Select and copy the text
-      textarea.select();
-      document.execCommand('copy');
-      
-      // Remove the temporary textarea
-      document.body.removeChild(textarea);
-      
-      // Show success message
-      copySuccess.style.display = 'inline';
-      setTimeout(() => {
-        copySuccess.style.display = 'none';
-      }, 2000);
     });
     
     // Initialize calculation on page load
