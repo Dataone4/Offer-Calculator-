@@ -14,13 +14,13 @@
       --text: #333333;
       --border-radius: 12px;
     }
-
+    
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
-
+    
     body {
       font-family: 'Montserrat', sans-serif;
       background: var(--background);
@@ -32,7 +32,7 @@
       align-items: center;
       justify-content: center;
     }
-
+    
     .calculator-container {
       width: 100%;
       max-width: 500px;
@@ -41,23 +41,23 @@
       border-radius: var(--border-radius);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
-
+    
     h2 {
       margin-bottom: 20px;
       color: var(--primary);
       text-align: center;
     }
-
+    
     .input-group {
       margin-bottom: 20px;
     }
-
+    
     label {
       display: block;
       margin-bottom: 8px;
       font-weight: 500;
     }
-
+    
     input[type="number"] {
       width: 100%;
       padding: 10px;
@@ -66,32 +66,32 @@
       font-family: inherit;
       margin-bottom: 15px;
     }
-
+    
     .range-container {
       display: flex;
       flex-direction: column;
       margin-bottom: 20px;
     }
-
+    
     .range-header {
       display: flex;
       justify-content: space-between;
       margin-bottom: 8px;
     }
-
+    
     input[type="range"] {
       width: 100%;
       margin-bottom: 10px;
       accent-color: var(--primary);
     }
-
+    
     .range-labels {
       display: flex;
       justify-content: space-between;
       font-size: 12px;
       color: #666;
     }
-
+    
     .button {
       display: block;
       width: 100%;
@@ -107,11 +107,11 @@
       font-size: 16px;
       margin: 20px 0;
     }
-
+    
     .button:hover {
       background-color: var(--primary-hover);
     }
-
+    
     .result {
       background-color: #f5f5f5;
       padding: 15px;
@@ -119,18 +119,18 @@
       margin-top: 20px;
       display: none;
     }
-
+    
     .result.active {
       display: block;
     }
-
+    
     .result-value {
       font-size: 24px;
       font-weight: 600;
       color: var(--primary);
       margin: 10px 0;
     }
-
+    
     .disclaimer {
       font-size: 12px;
       color: #777;
@@ -138,7 +138,7 @@
       padding-top: 15px;
       border-top: 1px solid #eee;
     }
-
+    
     @media (max-width: 600px) {
       .calculator-container {
         padding: 20px;
@@ -149,33 +149,44 @@
 <body>
   <div class="calculator-container">
     <h2>Offer Calculator</h2>
-
+    
     <div class="input-group">
       <label for="ebitda">EBITDA (ƒ)</label>
-      <input type="number" id="ebitda" placeholder="Enter EBITDA" value="760000">
+      <input 
+        type="number" 
+        id="ebitda" 
+        placeholder="Enter EBITDA" 
+        value="760,000"
+      >
     </div>
-
+    
     <div class="range-container">
       <div class="range-header">
         <label for="multipleRange">In how many years would you like to see Return On Investment?</label>
         <span id="multipleValue">3</span>
       </div>
-      <input type="range" min="1" max="10" value="3" id="multipleRange">
+      <input
+        type="range"
+        min="1"
+        max="10"
+        value="3"
+        id="multipleRange"
+      >
       <div class="range-labels">
         <span>1</span>
         <span>5</span>
         <span>10</span>
       </div>
     </div>
-
+    
     <button class="button" id="calculateBtn">Calculate Offer</button>
-
+    
     <div class="result" id="resultContainer">
       <h3>Estimated Offer</h3>
       <div class="result-value" id="offerResult"></div>
-      <p>Based on <span id="ebitdaDisplay"></span> EBITDA with a return over <span id="multipleDisplay"></span> years.</p>
+      <p>Based on <span id="ebitdaDisplay"></span> EBITDA with a <span id="multipleDisplay"></span> years return period.</p>
     </div>
-
+    
     <p class="disclaimer">Disclaimer: The results provided by this calculator are for informational purposes only and do not constitute financial advice. Actual business offers may vary based on multiple factors. Consult with a financial advisor for a professional assessment.</p>
   </div>
 
@@ -199,13 +210,13 @@
     }
 
     calculateBtn.addEventListener('click', () => {
-      const ebitda = parseFloat(ebitdaInput.value) || 0;
+      const ebitda = parseFloat(ebitdaInput.value.replace(/,/g, '')) || 0;
       const multiple = parseFloat(multipleRange.value);
       const offer = ebitda * multiple;
 
       offerResult.textContent = formatCurrency(offer);
       ebitdaDisplay.textContent = formatCurrency(ebitda);
-      multipleDisplay.textContent = multiple;
+      multipleDisplay.textContent = `${multiple}`;
 
       resultContainer.classList.add('active');
     });
