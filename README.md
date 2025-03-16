@@ -58,7 +58,7 @@
       font-weight: 500;
     }
     
-    input[type="number"] {
+    input[type="text"] {
       width: 100%;
       padding: 10px;
       border: 1px solid #ddd;
@@ -153,7 +153,7 @@
     <div class="input-group">
       <label for="ebitda">EBITDA (ƒ)</label>
       <input 
-        type="number" 
+        type="text" 
         id="ebitda" 
         placeholder="Enter EBITDA" 
         value="760,000"
@@ -200,9 +200,13 @@
     const ebitdaDisplay = document.getElementById('ebitdaDisplay');
     const multipleDisplay = document.getElementById('multipleDisplay');
 
+    ebitdaInput.addEventListener('input', () => {
+      const value = ebitdaInput.value.replace(/,/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      ebitdaInput.value = value;
+    });
+
     multipleRange.addEventListener('input', () => {
-      const value = multipleRange.value;
-      multipleValue.textContent = value;
+      multipleValue.textContent = multipleRange.value;
     });
 
     function formatCurrency(num) {
@@ -219,10 +223,6 @@
       multipleDisplay.textContent = `${multiple}`;
 
       resultContainer.classList.add('active');
-    });
-
-    window.addEventListener('DOMContentLoaded', () => {
-      multipleValue.textContent = multipleRange.value;
     });
   </script>
 </body>
